@@ -1,0 +1,66 @@
+easy_admin:
+    list:
+        actions: ['show', 'edit', 'new', 'search','delete']
+    site_name: 'Muhogo-K@lima'
+    design:
+        assets:
+            js:
+                - '/assets/js/exercise.js'
+        brand_color: '#db002e'
+        menu:
+            - { entity: User, label: 'Utilisateurs', icon: 'users'}
+            - { entity: 'Theme', label: 'Thématique', icon: 'th-list' }
+            - { label: 'Les Activités' }
+            - { entity: 'Activite', label: 'Activités', icon: 'project-diagram' }
+            - { entity: 'Lesson', label: 'Leçons', icon: 'chalkboard-teacher' }
+            - { entity: 'Exercise', label: 'Exercices', icon: 'poll-h' }
+
+    entities:
+#        # List the entity class name you want to manage
+        Theme:
+            class: App\Entity\Theme
+            form:
+                fields:
+                    - name
+                    - libelle
+                    - icon
+        Activite:
+            class: App\Entity\Activite
+            form:
+                fields:
+                    - theme
+                    - name
+                    - libelle
+                    - image
+            list:
+                fields:
+                    - name
+                    - libelle
+                    - { property: 'image', type: 'image', is_image_url: 'true' }
+                    - theme
+
+        Lesson:
+            class: App\Entity\Lesson
+        Exercise:
+            class: App\Entity\Exercise
+            form:
+                fields:
+                    - { type: 'group', label: "Donnée de l'Exercice", icon: 'poll-h', columns: 6 }
+                    - { property: 'activite', label: "Je choisis une activité" }
+                    - { property: 'exerciseType',label: "Choisis le type de l'exercice" ,type: 'choice', type_options: { expanded: false,choices: { '':'','Traduction de phrase': 'translatesSentence', 'Traduction exacte': 'chooseExactTranslation' ,'Tape sur les paires': 'traductionPaires' } } }
+                    - { property: 'enonce', label: "L'énnoncé de l'exercice " }
+                    - { property: 'phraseTraduire', label: "La phrase à traduire" }
+                    - { property: 'reponseExercice', label: "La réponse de l'exercice" }
+                    - { type: 'group', label: 'Proposition de reponse', icon: 'poll-h', columns: 4 }
+                    - { property: 'listeProposition', label: "Liste de proposition de reponse" }
+                    - { property: 'listeMotComorien', label: "Liste de proposition de mot comorien" }
+                    - { property: 'listeMotFrancais', label: "Liste de proposition de mot français" }
+
+        User:
+            class: App\Entity\User
+            form:
+                fields:
+                    - email
+                    - { property: 'plainPassword', type: 'text'}
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, expanded: true,choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' ,'ROLE_SUPER_ADMIN': 'ROLE_SUPER_ADMIN' } } }
+                    - { property: password , type_options: { disabled: true }}
