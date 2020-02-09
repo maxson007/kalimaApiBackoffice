@@ -15,7 +15,7 @@ $(function() {
         return urlparameter;
     }
     const entity = getUrlParam('entity');
-    console.log(entity);
+    //console.log(entity);
     //colone de droite Proposition de reponse
     $("#new-exercise-form > div > div.field-group.col-4").hide();
     $("#edit-exercise-form > div > div.field-group.col-4").hide();

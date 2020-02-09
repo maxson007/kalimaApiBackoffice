@@ -3,6 +3,9 @@ easy_admin:
         actions: ['show', 'edit', 'new', 'search','delete']
     site_name: 'Muhogo-K@lima'
     design:
+        form_theme: # Both themes are for ckeditor integration
+            - "@EasyAdmin/form/bootstrap_4.html.twig"
+            - "@FOSCKEditor/Form/ckeditor_widget.html.twig"
         assets:
             js:
                 - '/assets/js/exercise.js'
@@ -41,6 +44,12 @@ easy_admin:
 
         Lesson:
             class: App\Entity\Lesson
+            form:
+                fields:
+                    - { property: 'activite', label: "Je choisis une activité" }
+                    - { property: 'title', label: "Titre" }
+                    - { property: 'content', type: 'fos_ckeditor' ,label: "Contenu" }
+                    - { property: 'isPublished', label: "Publier la leçon" }
         Exercise:
             class: App\Entity\Exercise
             form:
