@@ -3,6 +3,8 @@
 
 namespace App\EventSubscriber;
 
+use App\Entity\Exercise;
+use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use App\Entity\User;
@@ -24,6 +26,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         return array(
             'easy_admin.pre_persist' => array('encodePassword'),
+             EasyAdminEvents::PRE_UPDATE => [array('encodePassword',2), array('updateExercice')],
         );
     }
 
@@ -40,5 +43,20 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $user->setPassword($password);
 
         $event['entity'] = $user;
+    }
+
+    public function updateExercice(GenericEvent $event)
+    {
+        $exercise = $event->getSubject();
+
+        if (!($exercise instanceof Exercise)) {
+            return;
+        }
+
+        $exercise->setListeMotComorien(array_values($exercise->getListeMotComorien()));
+        $exercise->setListeMotFrancais(array_values($exercise->getListeMotFrancais()));
+        $exercise->setListeProposition(array_values($exercise->getListeProposition()));
+
+        $event['entity'] = $exercise;
     }
 }
